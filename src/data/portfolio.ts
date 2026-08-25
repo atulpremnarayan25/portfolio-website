@@ -5,9 +5,9 @@ export const portfolio = {
   availability: "AVAILABLE FOR OPPORTUNITIES",
   
   social: {
-    github: "YOUR_GITHUB_URL",
-    linkedin: "YOUR_LINKEDIN_URL",
-    email: "YOUR_EMAIL",
+    github: "https://github.com",
+    linkedin: "https://linkedin.com",
+    email: "atulprem.dev@gmail.com",
     resume: "#"
   },
 
@@ -49,8 +49,8 @@ export const portfolio = {
       title: "Medical ERP System",
       description: "Comprehensive medical inventory and enterprise resource planning platform.",
       technologies: ["React", "Node.js", "PostgreSQL", "Tailwind"],
-      github: "PROJECT_GITHUB_URL",
-      demo: "PROJECT_DEMO_URL",
+      github: "https://github.com",
+      demo: "#",
       diagram: [
         "Inventory",
         "Purchases",
@@ -64,8 +64,8 @@ export const portfolio = {
       title: "ProofOfLearning",
       description: "Smart virtual classroom with engagement monitoring and analytics.",
       technologies: ["Next.js", "WebRTC", "Python", "Computer Vision"],
-      github: "PROJECT_GITHUB_URL",
-      demo: "PROJECT_DEMO_URL",
+      github: "https://github.com",
+      demo: "#",
       diagram: [
         "Teacher",
         "Virtual Classroom",
@@ -78,24 +78,24 @@ export const portfolio = {
       title: "Poképedia",
       description: "Interactive encyclopedia for Pokémon with detailed stats and abilities.",
       technologies: ["React", "API Integration", "Framer Motion"],
-      github: "PROJECT_GITHUB_URL",
-      demo: "PROJECT_DEMO_URL",
+      github: "https://github.com",
+      demo: "#",
     },
     {
       id: "04",
       title: "Crypto Price Tracker",
       description: "Real-time cryptocurrency tracking platform with live chart integrations.",
       technologies: ["Next.js", "WebSockets", "Tailwind"],
-      github: "PROJECT_GITHUB_URL",
-      demo: "PROJECT_DEMO_URL",
+      github: "https://github.com",
+      demo: "#",
     },
     {
       id: "05",
       title: "Eye-Blink HCI",
       description: "Human-Computer Interface controlled entirely by eye blinks.",
       technologies: ["Python", "OpenCV", "Dlib"],
-      github: "PROJECT_GITHUB_URL",
-      demo: "PROJECT_DEMO_URL",
+      github: "https://github.com",
+      demo: "#",
       diagram: [
         "L-BLINK → LEFT",
         "R-BLINK → RIGHT",

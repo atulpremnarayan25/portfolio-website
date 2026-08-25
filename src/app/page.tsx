@@ -2,6 +2,7 @@ import { Navbar } from "@/components/Navbar";
 import { Hero } from "@/components/Hero";
 import { About } from "@/components/About";
 import { Projects } from "@/components/Projects";
+import { Stack } from "@/components/Stack";
 import { Terminal } from "@/components/Terminal";
 import { Footer } from "@/components/Footer";
 
@@ -14,6 +15,9 @@ export default function Home() {
         <About />
         <div className="w-full h-px bg-gradient-to-r from-transparent via-white/5 to-transparent max-w-4xl mx-auto" />
         <Projects />
+        <div className="w-full h-px bg-gradient-to-r from-transparent via-white/5 to-transparent max-w-4xl mx-auto" />
+        <Stack />
+        <div className="w-full h-px bg-gradient-to-r from-transparent via-white/5 to-transparent max-w-4xl mx-auto" />
         <Terminal />
       </main>
       <Footer />

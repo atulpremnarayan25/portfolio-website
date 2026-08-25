@@ -1,17 +1,19 @@
 "use client";
 
-import { motion } from "framer-motion";
+import { motion, useReducedMotion } from "framer-motion";
 import { portfolio } from "@/data/portfolio";
 
 export function About() {
+  const shouldReduceMotion = useReducedMotion() === true;
+
   return (
     <section id="about" className="py-32 relative">
       <div className="container mx-auto px-6 md:px-12">
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
+          initial={shouldReduceMotion ? false : { opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "-100px" }}
-          transition={{ duration: 0.6 }}
+          transition={{ duration: shouldReduceMotion ? 0 : 0.6 }}
           className="mb-16"
         >
           <h2 className="text-sm font-mono tracking-widest text-[#3b82f6] uppercase mb-4">
@@ -24,10 +26,10 @@ export function About() {
 
         <div className="grid md:grid-cols-2 gap-16 items-start">
           <motion.div
-            initial={{ opacity: 0, y: 20 }}
+            initial={shouldReduceMotion ? false : { opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: "-100px" }}
-            transition={{ duration: 0.6, delay: 0.2 }}
+            transition={{ duration: shouldReduceMotion ? 0 : 0.6, delay: shouldReduceMotion ? 0 : 0.2 }}
             className="text-white/60 text-lg leading-relaxed space-y-6 font-light"
           >
             <p>{portfolio.about.bio}</p>
@@ -35,10 +37,10 @@ export function About() {
 
           {/* Technical Identity Card */}
           <motion.div
-            initial={{ opacity: 0, y: 20 }}
+            initial={shouldReduceMotion ? false : { opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: "-100px" }}
-            transition={{ duration: 0.6, delay: 0.3 }}
+            transition={{ duration: shouldReduceMotion ? 0 : 0.6, delay: shouldReduceMotion ? 0 : 0.3 }}
             className="p-8 rounded-2xl bg-white/[0.02] border border-white/5 backdrop-blur-sm relative overflow-hidden group"
           >
             {/* Hover Glow */}
@@ -70,7 +72,13 @@ export function About() {
             </div>
             
             {/* Decorative Grid on Card */}
-            <div className="absolute top-0 right-0 w-32 h-32 bg-grid-pattern opacity-10 pointer-events-none" style={{ maskImage: 'radial-gradient(circle at top right, black, transparent)' }} />
+            <div 
+              className="absolute top-0 right-0 w-32 h-32 bg-grid-pattern opacity-10 pointer-events-none" 
+              style={{ 
+                WebkitMaskImage: 'radial-gradient(circle at top right, black, transparent)',
+                maskImage: 'radial-gradient(circle at top right, black, transparent)' 
+              }} 
+            />
           </motion.div>
         </div>
       </div>

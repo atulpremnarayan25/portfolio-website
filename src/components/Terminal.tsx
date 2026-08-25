@@ -1,14 +1,14 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { motion } from "framer-motion";
+import { motion, useReducedMotion } from "framer-motion";
 import { portfolio } from "@/data/portfolio";
 import { RefreshCw } from "lucide-react";
 
 export function Terminal() {
   const [terminalStep, setTerminalStep] = useState(0);
+  const shouldReduceMotion = useReducedMotion() === true;
   
-  // Use a ref for commands or move it out if it's static
   useEffect(() => {
     const commands = [
       { cmd: "whoami", wait: 500, out: `atul@developer` },
@@ -22,16 +22,16 @@ export function Terminal() {
         // typing command
         timeout = setTimeout(() => {
           setTerminalStep((s) => s + 1);
-        }, commands[terminalStep / 2].wait);
+        }, shouldReduceMotion ? 50 : commands[terminalStep / 2].wait);
       } else {
         // showing output
         timeout = setTimeout(() => {
           setTerminalStep((s) => s + 1);
-        }, 400);
+        }, shouldReduceMotion ? 50 : 400);
       }
     }
     return () => clearTimeout(timeout);
-  }, [terminalStep]);
+  }, [terminalStep, shouldReduceMotion]);
 
   const commands = [
     { cmd: "whoami", wait: 500, out: `atul@developer` },
@@ -45,13 +45,13 @@ export function Terminal() {
   };
 
   return (
-    <section id="terminal" className="py-24">
+    <section id="contact" className="py-24">
       <div className="container mx-auto px-6 md:px-12 flex justify-center">
         <motion.div 
-          initial={{ opacity: 0, y: 20 }}
+          initial={shouldReduceMotion ? false : { opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "-100px" }}
-          transition={{ duration: 0.6 }}
+          transition={{ duration: shouldReduceMotion ? 0 : 0.6 }}
           className="w-full max-w-3xl rounded-lg bg-[#070b12] border border-white/10 overflow-hidden shadow-2xl shadow-blue-500/5 group"
         >
           {/* Terminal Window Header */}
@@ -61,13 +61,13 @@ export function Terminal() {
               <div className="w-3 h-3 rounded-full bg-yellow-500/80" />
               <div className="w-3 h-3 rounded-full bg-green-500/80" />
             </div>
-            <div className="text-[10px] font-mono text-white/40 tracking-wider">atul@environment ~</div>
+            <div className="text-[10px] font-mono text-white/50 tracking-wider">atul@environment ~</div>
             <button 
               onClick={resetTerminal}
-              className="text-white/40 hover:text-white transition-colors"
-              aria-label="Restart animation"
+              className="text-white/50 hover:text-white transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 rounded p-1"
+              aria-label="Restart terminal animation"
             >
-              <RefreshCw size={14} />
+              <RefreshCw size={14} aria-hidden="true" />
             </button>
           </div>
           
@@ -88,7 +88,7 @@ export function Terminal() {
                     </span>
                   </div>
                   {isOutputReady && (
-                    <div className="text-white/50 mt-1 whitespace-pre-wrap ml-1 pl-4 border-l border-white/10">
+                    <div className="text-white/60 mt-1 whitespace-pre-wrap ml-1 pl-4 border-l border-white/10">
                       {c.out}
                     </div>
                   )}

@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion, AnimatePresence, useReducedMotion } from "framer-motion";
 import { portfolio } from "@/data/portfolio";
 import { Menu, X } from "lucide-react";
 import { cn } from "@/lib/utils";
@@ -16,6 +16,7 @@ const navLinks = [
 export function Navbar() {
   const [scrolled, setScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const shouldReduceMotion = useReducedMotion() === true;
 
   useEffect(() => {
     const handleScroll = () => {
@@ -27,9 +28,9 @@ export function Navbar() {
 
   return (
     <motion.header
-      initial={{ y: -100, opacity: 0 }}
+      initial={shouldReduceMotion ? false : { y: -100, opacity: 0 }}
       animate={{ y: 0, opacity: 1 }}
-      transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+      transition={{ duration: shouldReduceMotion ? 0 : 0.8, ease: [0.16, 1, 0.3, 1] }}
       className={cn(
         "fixed top-0 left-0 right-0 z-40 transition-all duration-300 border-b border-transparent",
         scrolled 
@@ -38,22 +39,22 @@ export function Navbar() {
       )}
     >
       <div className="container mx-auto px-6 md:px-12 flex items-center justify-between">
-        <a href="#" className="text-xl font-bold tracking-widest uppercase">
+        <a href="#" className="text-xl font-bold tracking-widest uppercase focus:outline-none focus:ring-2 focus:ring-blue-500 rounded">
           {portfolio.name.split(" ")[0]}
         </a>
 
         {/* Desktop Nav */}
-        <nav className="hidden md:flex items-center gap-8">
+        <nav className="hidden md:flex items-center gap-8" aria-label="Main Navigation">
           <ul className="flex items-center gap-8 text-sm font-medium text-[--color-foreground-muted]">
             {navLinks.map((link) => (
               <li key={link.name}>
-                <a href={link.href} className="hover:text-white transition-colors duration-200">
+                <a href={link.href} className="hover:text-white transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-blue-500 rounded px-1">
                   {link.name}
                 </a>
               </li>
             ))}
           </ul>
-          <div className="w-px h-4 bg-[rgba(255,255,255,0.1)]"></div>
+          <div className="w-px h-4 bg-[rgba(255,255,255,0.1)]" aria-hidden="true" />
           <div className="flex items-center gap-4 text-sm font-medium">
             <a href={portfolio.social.github} target="_blank" rel="noopener noreferrer" className="hover:text-white transition-colors">
               GitHub
@@ -66,8 +67,10 @@ export function Navbar() {
 
         {/* Mobile Toggle */}
         <button 
-          className="md:hidden p-2 text-white/70 hover:text-white"
+          className="md:hidden p-2 text-white/70 hover:text-white focus:outline-none focus:ring-2 focus:ring-blue-500 rounded"
           onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+          aria-label="Toggle navigation menu"
+          aria-expanded={mobileMenuOpen}
         >
           {mobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
         </button>
@@ -77,12 +80,13 @@ export function Navbar() {
       <AnimatePresence>
         {mobileMenuOpen && (
           <motion.div
-            initial={{ opacity: 0, height: 0 }}
+            initial={shouldReduceMotion ? false : { opacity: 0, height: 0 }}
             animate={{ opacity: 1, height: "auto" }}
-            exit={{ opacity: 0, height: 0 }}
+            exit={shouldReduceMotion ? { opacity: 0 } : { opacity: 0, height: 0 }}
+            transition={{ duration: shouldReduceMotion ? 0 : 0.3 }}
             className="md:hidden bg-[#070b12] border-b border-white/5 overflow-hidden"
           >
-            <nav className="flex flex-col px-6 py-4 gap-4">
+            <nav className="flex flex-col px-6 py-4 gap-4" aria-label="Mobile Navigation">
               {navLinks.map((link) => (
                 <a 
                   key={link.name} 
@@ -94,8 +98,12 @@ export function Navbar() {
                 </a>
               ))}
               <div className="flex items-center gap-4 pt-2">
-                <a href={portfolio.social.github} className="text-white/70 hover:text-white">GitHub</a>
-                <a href={portfolio.social.resume} className="text-white/70 hover:text-white">Resume</a>
+                <a href={portfolio.social.github} target="_blank" rel="noopener noreferrer" className="text-white/70 hover:text-white">
+                  GitHub
+                </a>
+                <a href={portfolio.social.resume} className="text-white/70 hover:text-white">
+                  Resume
+                </a>
               </div>
             </nav>
           </motion.div>
