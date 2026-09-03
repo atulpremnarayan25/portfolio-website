@@ -1,86 +1,127 @@
 "use client";
 
 import { motion, useReducedMotion } from "framer-motion";
+import Image from "next/image";
 import { portfolio } from "@/data/portfolio";
 
+const headerFromLeft = {
+  hidden: { opacity: 0, x: -30 },
+  visible: { opacity: 1, x: 0, transition: { duration: 0.5 } },
+};
+
+const lineGrow = {
+  hidden: { scaleX: 0, originX: 0 },
+  visible: { scaleX: 1, transition: { duration: 0.5, delay: 0.2 } },
+};
+
+const fadeUp = {
+  hidden: { opacity: 0, y: 20 },
+  visible: { opacity: 1, y: 0 },
+};
+
+const staggerContainer = {
+  hidden: {},
+  visible: {
+    transition: {
+      staggerChildren: 0.12,
+    },
+  },
+};
+
+function DotGrid({ className = "" }: { className?: string }) {
+  return (
+    <div className={`grid grid-cols-5 gap-3 ${className}`} aria-hidden="true">
+      {Array.from({ length: 25 }).map((_, i) => (
+        <div key={i} className="w-1 h-1 rounded-full bg-[#ABB2BF]" />
+      ))}
+    </div>
+  );
+}
+
 export function About() {
-  const shouldReduceMotion = useReducedMotion() === true;
+  const prefersReducedMotion = useReducedMotion();
 
   return (
-    <section id="about" className="py-32 relative">
-      <div className="container mx-auto px-6 md:px-12">
+    <section id="about-me" className="py-16 px-4 scroll-mt-20">
+      <div className="max-w-[1024px] mx-auto">
+        {/* Section header */}
         <motion.div
-          initial={shouldReduceMotion ? false : { opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: "-100px" }}
-          transition={{ duration: shouldReduceMotion ? 0 : 0.6 }}
-          className="mb-16"
+          className="flex items-center gap-4 mb-12"
+          initial={prefersReducedMotion ? false : "hidden"}
+          whileInView="visible"
+          viewport={{ once: true, amount: 0.5 }}
         >
-          <h2 className="text-sm font-mono tracking-widest text-[#3b82f6] uppercase mb-4">
-            About The Developer
-          </h2>
-          <h3 className="text-3xl md:text-5xl font-bold tracking-tight max-w-2xl leading-tight">
-            {portfolio.about.heading}
-          </h3>
+          <motion.h2
+            className="text-2xl font-semibold whitespace-nowrap"
+            variants={headerFromLeft}
+          >
+            <span className="text-[#C778DD]">#</span>
+            <span className="text-white">about-me</span>
+          </motion.h2>
+          <motion.div
+            className="h-px bg-[#C778DD] flex-1 max-w-[200px]"
+            aria-hidden="true"
+            variants={lineGrow}
+          />
         </motion.div>
 
-        <div className="grid md:grid-cols-2 gap-16 items-start">
-          <motion.div
-            initial={shouldReduceMotion ? false : { opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: "-100px" }}
-            transition={{ duration: shouldReduceMotion ? 0 : 0.6, delay: shouldReduceMotion ? 0 : 0.2 }}
-            className="text-white/60 text-lg leading-relaxed space-y-6 font-light"
-          >
-            <p>{portfolio.about.bio}</p>
-          </motion.div>
+        <motion.div
+          className="flex flex-col lg:flex-row gap-12 items-start"
+          variants={staggerContainer}
+          initial={prefersReducedMotion ? false : "hidden"}
+          whileInView="visible"
+          viewport={{ once: true, amount: 0.2 }}
+        >
+          {/* Left: Text */}
+          <div className="flex-1">
+            <motion.p
+              className="text-[#ABB2BF] text-base leading-relaxed mb-6"
+              variants={fadeUp}
+              transition={{ duration: 0.5 }}
+            >
+              {portfolio.about.heading}
+            </motion.p>
+            <motion.p
+              className="text-[#ABB2BF] text-base leading-relaxed mb-8"
+              variants={fadeUp}
+              transition={{ duration: 0.5 }}
+            >
+              {portfolio.about.bio}
+            </motion.p>
+            <motion.a
+              href="#"
+              className="inline-block border border-[#C778DD] text-white px-4 py-2 text-sm hover:bg-[#C778DD]/20 transition-colors focus:outline-none focus:ring-2 focus:ring-[#C778DD]"
+              variants={fadeUp}
+              transition={{ duration: 0.5 }}
+              whileTap={prefersReducedMotion ? undefined : { scale: 0.97 }}
+            >
+              Read more -&gt;
+            </motion.a>
+          </div>
 
-          {/* Technical Identity Card */}
+          {/* Right: Image area with decorative elements */}
           <motion.div
-            initial={shouldReduceMotion ? false : { opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: "-100px" }}
-            transition={{ duration: shouldReduceMotion ? 0 : 0.6, delay: shouldReduceMotion ? 0 : 0.3 }}
-            className="p-8 rounded-2xl bg-white/[0.02] border border-white/5 backdrop-blur-sm relative overflow-hidden group"
+            className="relative hidden lg:block shrink-0"
+            variants={fadeUp}
+            transition={{ duration: 0.6 }}
           >
-            {/* Hover Glow */}
-            <div className="absolute inset-0 bg-gradient-to-br from-blue-500/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none" />
-            
-            <div className="space-y-8 relative z-10">
-              <div>
-                <div className="text-[10px] font-mono tracking-widest text-white/40 uppercase mb-2">Role</div>
-                <div className="text-xl font-medium">{portfolio.role}</div>
+            <div className="w-[260px] h-[300px] relative">
+              {/* Main image */}
+              <div className="w-full h-full bg-[#282C33] border border-[#ABB2BF] overflow-hidden relative">
+                <Image
+                  src="/images/photo.jpg"
+                  alt={portfolio.name}
+                  fill
+                  className="object-cover object-center"
+                />
               </div>
-              
-              <div>
-                <div className="text-[10px] font-mono tracking-widest text-white/40 uppercase mb-2">Education</div>
-                <div className="text-lg text-white/80">{portfolio.about.education}</div>
-              </div>
-              
-              <div>
-                <div className="text-[10px] font-mono tracking-widest text-white/40 uppercase mb-2">Focus</div>
-                <div className="text-lg text-white/80">{portfolio.about.focus}</div>
-              </div>
-              
-              <div>
-                <div className="text-[10px] font-mono tracking-widest text-white/40 uppercase mb-2">Current Status</div>
-                <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-500/10 border border-blue-500/20 text-blue-400 text-sm">
-                  <span className="w-1.5 h-1.5 rounded-full bg-blue-500 animate-pulse" />
-                  {portfolio.status}
-                </div>
+              {/* Dot grid */}
+              <div className="absolute -top-6 -left-6">
+                <DotGrid />
               </div>
             </div>
-            
-            {/* Decorative Grid on Card */}
-            <div 
-              className="absolute top-0 right-0 w-32 h-32 bg-grid-pattern opacity-10 pointer-events-none" 
-              style={{ 
-                WebkitMaskImage: 'radial-gradient(circle at top right, black, transparent)',
-                maskImage: 'radial-gradient(circle at top right, black, transparent)' 
-              }} 
-            />
           </motion.div>
-        </div>
+        </motion.div>
       </div>
     </section>
   );

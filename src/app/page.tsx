@@ -1,24 +1,26 @@
 import { Navbar } from "@/components/Navbar";
 import { Hero } from "@/components/Hero";
-import { About } from "@/components/About";
 import { Projects } from "@/components/Projects";
-import { Stack } from "@/components/Stack";
-import { Terminal } from "@/components/Terminal";
-import { Footer } from "@/components/Footer";
+import { Skills } from "@/components/Skills";
+import { About } from "@/components/About";
+import { Contacts, Footer } from "@/components/Contacts";
 
 export default function Home() {
   return (
     <>
+      <a
+        href="#main-content"
+        className="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-[60] focus:px-4 focus:py-2 focus:bg-[#C778DD] focus:text-white focus:text-sm focus:font-medium"
+      >
+        Skip to main content
+      </a>
       <Navbar />
-      <main className="flex-1 w-full flex flex-col relative">
+      <main id="main-content" className="flex-1 w-full flex flex-col relative">
         <Hero />
-        <About />
-        <div className="w-full h-px bg-gradient-to-r from-transparent via-white/5 to-transparent max-w-4xl mx-auto" />
         <Projects />
-        <div className="w-full h-px bg-gradient-to-r from-transparent via-white/5 to-transparent max-w-4xl mx-auto" />
-        <Stack />
-        <div className="w-full h-px bg-gradient-to-r from-transparent via-white/5 to-transparent max-w-4xl mx-auto" />
-        <Terminal />
+        <Skills />
+        <About />
+        <Contacts />
       </main>
       <Footer />
     </>

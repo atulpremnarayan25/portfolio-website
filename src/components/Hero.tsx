@@ -1,130 +1,196 @@
 "use client";
 
 import { motion, useReducedMotion } from "framer-motion";
+import Image from "next/image";
 import { portfolio } from "@/data/portfolio";
-import { ArrowRight } from "lucide-react";
-import { GithubIcon } from "@/components/ui/icons";
 
-const SystemDiagram = ({ shouldReduceMotion }: { shouldReduceMotion: boolean }) => {
-  const nodes = ["USER", "FRONTEND", "API", "BACKEND", "DATABASE"];
-  
+function DotGrid({
+  rows = 5,
+  cols = 5,
+  className = "",
+}: {
+  rows?: number;
+  cols?: number;
+  className?: string;
+}) {
   return (
-    <div className="hidden lg:flex flex-col items-center justify-center space-y-4 opacity-70">
-      {nodes.map((node, i) => (
-        <div key={node} className="flex flex-col items-center">
-          <motion.div
-            initial={shouldReduceMotion ? false : { opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: shouldReduceMotion ? 0 : 1 + i * 0.2, duration: shouldReduceMotion ? 0 : 0.8 }}
-            className="px-4 py-2 border border-white/10 rounded-md bg-white/[0.02] text-xs font-mono tracking-widest text-[#3b82f6]"
-          >
-            {node}
-          </motion.div>
-          {i !== nodes.length - 1 && (
-            <motion.div
-              initial={shouldReduceMotion ? false : { height: 0, opacity: 0 }}
-              animate={{ height: 24, opacity: 1 }}
-              transition={{ delay: shouldReduceMotion ? 0 : 1.2 + i * 0.2, duration: shouldReduceMotion ? 0 : 0.4 }}
-              className="w-[1px] bg-gradient-to-b from-[#3b82f6]/50 to-transparent my-1 relative"
-            >
-              {!shouldReduceMotion && (
-                <motion.div
-                  animate={{ y: [0, 24] }}
-                  transition={{ repeat: Infinity, duration: 1.5, delay: i * 0.2 }}
-                  className="absolute top-0 left-[50%] -translate-x-[50%] w-[3px] h-[6px] bg-[#3b82f6] rounded-full blur-[1px]"
-                />
-              )}
-            </motion.div>
-          )}
-        </div>
+    <div className={`grid gap-3 ${className}`} style={{ gridTemplateColumns: `repeat(${cols}, 1fr)` }} aria-hidden="true">
+      {Array.from({ length: rows * cols }).map((_, i) => (
+        <div
+          key={i}
+          className="w-1 h-1 rounded-full bg-[#ABB2BF]"
+        />
       ))}
     </div>
   );
+}
+
+const fadeUp = {
+  hidden: { opacity: 0, y: 20 },
+  visible: { opacity: 1, y: 0 },
+};
+
+const wordContainer = {
+  hidden: {},
+  visible: {
+    transition: {
+      staggerChildren: 0.08,
+    },
+  },
+};
+
+const wordVariant = {
+  hidden: { opacity: 0, y: 10 },
+  visible: { opacity: 1, y: 0, transition: { duration: 0.4 } },
 };
 
 export function Hero() {
-  const shouldReduceMotion = useReducedMotion() === true;
+  const { hero, quotes } = portfolio;
+  const prefersReducedMotion = useReducedMotion();
+
+  // Split heading into tokens for word-by-word animation
+  // The heading is like "Atul is a " and then we append highlights
+  const headingWords = hero.heading.trim().split(/\s+/);
 
   return (
-    <section className="relative min-h-screen flex items-center justify-center overflow-hidden pt-20">
-      {/* Background Elements */}
-      <div className="absolute inset-0 bg-grid-pattern opacity-20" />
-      <div className="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-blue-500/10 rounded-full blur-[120px] pointer-events-none" />
-      
-      <div className="container mx-auto px-6 md:px-12 grid lg:grid-cols-3 gap-12 items-center relative z-10">
-        
-        <div className="lg:col-span-2 flex flex-col items-start">
-          <motion.div
-            initial={shouldReduceMotion ? false : { opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: shouldReduceMotion ? 0 : 0.5, delay: shouldReduceMotion ? 0 : 0.2 }}
-            className="flex items-center gap-3 mb-8 px-4 py-2 rounded-full border border-white/5 bg-white/[0.02]"
-          >
-            <div className="w-2 h-2 rounded-full bg-blue-500 animate-pulse" />
-            <span className="text-xs font-mono tracking-widest text-white/70 uppercase">
-              {portfolio.availability}
-            </span>
-          </motion.div>
-
-          <motion.h1
-            initial={shouldReduceMotion ? false : { opacity: 0, y: 40 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: shouldReduceMotion ? 0 : 0.7, delay: shouldReduceMotion ? 0 : 0.3, ease: [0.16, 1, 0.3, 1] }}
-            className="text-4xl sm:text-6xl md:text-7xl lg:text-8xl font-bold tracking-tighter leading-[1.05] mb-6"
-          >
-            I BUILD <br />
-            <span className="text-gradient">SOFTWARE</span> <br />
-            THAT MATTERS.
-          </motion.h1>
-
-          <motion.p
-            initial={shouldReduceMotion ? false : { opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: shouldReduceMotion ? 0 : 0.7, delay: shouldReduceMotion ? 0 : 0.5 }}
-            className="hidden md:block text-lg md:text-xl text-white/60 max-w-xl font-light leading-relaxed mb-10"
-          >
-            {portfolio.name} — {portfolio.role}. <br />
-            I build thoughtful software, from interfaces and APIs to complete systems.
-          </motion.p>
-          
-          <motion.p
-            initial={shouldReduceMotion ? false : { opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: shouldReduceMotion ? 0 : 0.7, delay: shouldReduceMotion ? 0 : 0.5 }}
-            className="md:hidden text-base sm:text-lg text-white/60 max-w-xl font-light leading-relaxed mb-10"
-          >
-            {portfolio.name} — {portfolio.role}.
-          </motion.p>
-
-          <motion.div
-            initial={shouldReduceMotion ? false : { opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: shouldReduceMotion ? 0 : 0.5, delay: shouldReduceMotion ? 0 : 0.7 }}
-            className="flex flex-wrap items-center gap-4"
-          >
-            <a 
-              href="#work" 
-              className="group flex items-center gap-2 bg-white text-black px-6 py-3 rounded-lg font-medium transition-all hover:bg-white/90 focus:outline-none focus:ring-2 focus:ring-blue-500"
+    <section id="home" className="pt-24 pb-16 px-4 scroll-mt-20">
+      <div className="max-w-[1024px] mx-auto">
+        {/* Main hero content */}
+        <motion.div
+          className="flex flex-col lg:flex-row items-start justify-between gap-12 mb-16"
+          initial={prefersReducedMotion ? false : "hidden"}
+          animate="visible"
+          variants={{
+            hidden: {},
+            visible: { transition: { staggerChildren: 0.15 } },
+          }}
+        >
+          {/* Left: Heading + CTA */}
+          <div className="flex-1 max-w-xl">
+            <motion.h1
+              className="text-3xl md:text-4xl lg:text-[2.5rem] font-semibold text-white leading-tight mb-6"
+              variants={wordContainer}
+              initial={prefersReducedMotion ? false : "hidden"}
+              animate="visible"
             >
-              View Projects
-              <ArrowRight size={18} className="group-hover:translate-x-1 transition-transform" aria-hidden="true" />
-            </a>
-            <a 
-              href={portfolio.social.github}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="flex items-center gap-2 bg-white/5 border border-white/10 text-white px-6 py-3 rounded-lg font-medium transition-all hover:bg-white/10 focus:outline-none focus:ring-2 focus:ring-blue-500"
+              {headingWords.map((word, i) => (
+                <motion.span key={i} variants={wordVariant} className="inline-block mr-[0.3em]">
+                  {word}
+                </motion.span>
+              ))}
+              <motion.span variants={wordVariant} className="inline-block text-[#C778DD]">
+                {hero.highlights[0]}
+              </motion.span>
+              <motion.span variants={wordVariant} className="inline-block mr-[0.3em]">
+                {" and "}
+              </motion.span>
+              <motion.span variants={wordVariant} className="inline-block text-[#C778DD]">
+                {hero.highlights[1]}
+              </motion.span>
+            </motion.h1>
+            <motion.p
+              className="text-[#ABB2BF] text-base mb-8 leading-relaxed"
+              variants={fadeUp}
+              transition={{ duration: 0.5 }}
             >
-              <GithubIcon size={18} aria-hidden="true" />
-              GitHub
-            </a>
+              {hero.tagline}
+            </motion.p>
+            <motion.a
+              href="#contacts"
+              className="inline-block border border-[#C778DD] text-white px-4 py-2 text-sm hover:bg-[#C778DD]/20 transition-colors focus:outline-none focus:ring-2 focus:ring-[#C778DD]"
+              variants={fadeUp}
+              transition={{ duration: 0.5 }}
+              whileHover={prefersReducedMotion ? undefined : { scale: 1.04 }}
+              whileTap={prefersReducedMotion ? undefined : { scale: 0.97 }}
+            >
+              Contact me!!
+            </motion.a>
+          </div>
+
+          {/* Right: Decorative image area + dot grid */}
+          <motion.div
+            className="relative flex-shrink-0 hidden lg:block"
+            variants={fadeUp}
+            transition={{ duration: 0.6 }}
+          >
+            <div className="w-[280px] h-[320px] relative">
+              {/* Profile image */}
+              <div className="w-full h-full bg-[#282C33] border border-[#ABB2BF] overflow-hidden relative">
+                <Image
+                  src="/images/profile.png"
+                  alt={portfolio.name}
+                  fill
+                  className="object-cover object-center"
+                  priority
+                />
+              </div>
+              {/* Dot grid with gentle float */}
+              <motion.div
+                className="absolute -bottom-6 -right-6"
+                animate={
+                  prefersReducedMotion
+                    ? undefined
+                    : { y: [0, -6, 0] }
+                }
+                transition={
+                  prefersReducedMotion
+                    ? undefined
+                    : { duration: 4, repeat: Infinity, ease: "easeInOut" }
+                }
+              >
+                <DotGrid rows={5} cols={5} />
+              </motion.div>
+            </div>
           </motion.div>
-        </div>
+        </motion.div>
 
-        <div className="hidden lg:flex justify-end">
-          <SystemDiagram shouldReduceMotion={shouldReduceMotion} />
-        </div>
+        {/* Quote block */}
+        {quotes[0] && (
+          <motion.div
+            className="max-w-xl mb-12"
+            initial={prefersReducedMotion ? false : { opacity: 0, y: 16 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, amount: 0.3 }}
+            transition={{ duration: 0.5, delay: 0.3 }}
+          >
+            <div className="border border-[#ABB2BF] p-4 relative">
+              <span className="text-[#ABB2BF] text-2xl absolute -top-3 left-3 bg-[#1E1E1E] px-1" aria-hidden="true">
+                &ldquo;
+              </span>
+              <p className="text-[#ABB2BF] text-base pl-2">
+                {quotes[0].text}
+              </p>
+              <span className="text-[#ABB2BF] text-2xl absolute -bottom-3 right-3 bg-[#1E1E1E] px-1" aria-hidden="true">
+                &rdquo;
+              </span>
+            </div>
+            <div className="border border-[#ABB2BF] border-t-0 px-4 py-2 w-fit ml-auto">
+              <p className="text-[#ABB2BF] text-sm">
+                - {quotes[0].author}
+              </p>
+            </div>
+          </motion.div>
+        )}
 
+        {/* Second decorative quote */}
+        {quotes[1] && (
+          <motion.div
+            className="max-w-lg mx-auto"
+            initial={prefersReducedMotion ? false : { opacity: 0, y: 16 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, amount: 0.3 }}
+            transition={{ duration: 0.5, delay: 0.45 }}
+          >
+            <div className="bg-[#282C33] border border-[#ABB2BF] p-6">
+              <p className="text-[#ABB2BF] text-base text-center">
+                &ldquo;{quotes[1].text}&rdquo;
+              </p>
+              <p className="text-[#ABB2BF] text-sm text-right mt-2">
+                - {quotes[1].author}
+              </p>
+            </div>
+          </motion.div>
+        )}
       </div>
     </section>
   );

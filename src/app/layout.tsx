@@ -1,27 +1,38 @@
 import type { Metadata, Viewport } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Fira_Code } from "next/font/google";
 import "./globals.css";
 import { portfolio } from "@/data/portfolio";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
+const firaCode = Fira_Code({
+  variable: "--font-fira-code",
   subsets: ["latin"],
-});
-
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
+  weight: ["300", "400", "500", "600", "700"],
 });
 
 export const metadata: Metadata = {
   title: `${portfolio.name} — ${portfolio.role}`,
   description: portfolio.about.heading,
+  openGraph: {
+    title: `${portfolio.name} — ${portfolio.role}`,
+    description: portfolio.about.heading,
+    type: "website",
+    locale: "en_US",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: `${portfolio.name} — ${portfolio.role}`,
+    description: portfolio.about.heading,
+  },
+  robots: {
+    index: true,
+    follow: true,
+  },
 };
 
 export const viewport: Viewport = {
-  themeColor: "#05070b",
+  themeColor: "#1E1E1E",
   colorScheme: "dark",
-}
+};
 
 export default function RootLayout({
   children,
@@ -29,12 +40,8 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html
-      lang="en"
-      className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
-    >
+    <html lang="en" className={`${firaCode.variable} h-full antialiased`}>
       <body className="min-h-full flex flex-col relative">
-        <div className="noise-overlay"></div>
         {children}
       </body>
     </html>

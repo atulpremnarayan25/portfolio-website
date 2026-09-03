@@ -1,64 +1,45 @@
 @import "tailwindcss";
 
 @theme inline {
-  --color-background-primary: #05070b;
-  --color-background-secondary: #070b12;
-  --color-background-tertiary: #0a0f18;
-  --color-foreground: #f3f4f6;
-  --color-foreground-muted: #9ca3af;
-  --color-accent: #3b82f6; /* Subtle blue accent */
-  --color-border: rgba(255,255,255,0.05);
+  --color-bg: #1E1E1E;
+  --color-surface: #282C33;
+  --color-accent: #C778DD;
+  --color-text: #FFFFFF;
+  --color-text-secondary: #ABB2BF;
+  --color-border: #ABB2BF;
   
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --font-mono: var(--font-fira-code);
 }
 
 :root {
   color-scheme: dark;
 }
 
+html {
+  scroll-behavior: smooth;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
 body {
-  background-color: var(--color-background-primary);
-  color: var(--color-foreground);
-  font-family: var(--font-sans), sans-serif;
+  background-color: var(--color-bg);
+  color: var(--color-text-secondary);
+  font-family: var(--font-mono), monospace;
   overflow-x: hidden;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
-/* Base Utility for the dark grid pattern */
-.bg-grid-pattern {
-  background-size: 40px 40px;
-  background-image: 
-    linear-gradient(to right, rgba(255,255,255,0.02) 1px, transparent 1px),
-    linear-gradient(to bottom, rgba(255,255,255,0.02) 1px, transparent 1px);
-}
-
-.text-gradient {
-  background: linear-gradient(135deg, #ffffff 0%, #a1a1aa 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-}
-
-/* Subtle glow utilities */
-.glow-blue {
-  box-shadow: 0 0 120px rgba(59, 130, 246, 0.15);
-}
-
-/* Noise texture on layout if needed */
-.noise-overlay {
-  content: "";
-  position: fixed;
-  inset: 0;
-  pointer-events: none;
-  z-index: 50;
-  opacity: 0.25;
-  mix-blend-mode: overlay;
-  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
-}
-
-/* Restrained scrollbar */
+/* Custom scrollbar */
 ::-webkit-scrollbar {
   width: 8px;
 }
@@ -66,9 +47,15 @@ body {
   background: transparent;
 }
 ::-webkit-scrollbar-thumb {
-  background: rgba(255,255,255,0.1);
+  background: rgba(255, 255, 255, 0.1);
   border-radius: 4px;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: rgba(255,255,255,0.2);
+  background: rgba(255, 255, 255, 0.2);
+}
+
+/* Selection */
+::selection {
+  background-color: rgba(199, 120, 221, 0.3);
+  color: #FFFFFF;
 }

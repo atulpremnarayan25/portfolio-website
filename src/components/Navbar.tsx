@@ -3,112 +3,146 @@
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence, useReducedMotion } from "framer-motion";
 import { portfolio } from "@/data/portfolio";
-import { Menu, X } from "lucide-react";
-import { cn } from "@/lib/utils";
 
-const navLinks = [
-  { name: "About", href: "#about" },
-  { name: "Work", href: "#work" },
-  { name: "Stack", href: "#stack" },
-  { name: "Contact", href: "#contact" },
+const navItems = [
+  { label: "home", href: "#home" },
+  { label: "projects", href: "#projects" },
+  { label: "skills", href: "#skills" },
+  { label: "about-me", href: "#about-me" },
+  { label: "contacts", href: "#contacts" },
 ];
 
+function Logo() {
+  return (
+    <a href="#home" className="flex items-center gap-2 group focus:outline-none focus:ring-2 focus:ring-[#C778DD] rounded" aria-label="Home">
+      {/* Geometric cross/plus shape */}
+      <svg
+        width="24"
+        height="24"
+        viewBox="0 0 24 24"
+        fill="none"
+        aria-hidden="true"
+        className="shrink-0"
+      >
+        <rect x="8" y="0" width="8" height="8" fill="#FFFFFF" />
+        <rect x="0" y="8" width="8" height="8" fill="#C778DD" />
+        <rect x="8" y="8" width="8" height="8" fill="#FFFFFF" />
+        <rect x="16" y="8" width="8" height="8" fill="#C778DD" />
+        <rect x="8" y="16" width="8" height="8" fill="#FFFFFF" />
+      </svg>
+      <span className="text-white font-semibold text-base">
+        {portfolio.shortName}
+      </span>
+    </a>
+  );
+}
+
 export function Navbar() {
-  const [scrolled, setScrolled] = useState(false);
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const shouldReduceMotion = useReducedMotion() === true;
+  const [mobileOpen, setMobileOpen] = useState(false);
+  const [activeSection, setActiveSection] = useState("home");
+  const prefersReducedMotion = useReducedMotion();
 
   useEffect(() => {
     const handleScroll = () => {
-      setScrolled(window.scrollY > 50);
+      const sections = navItems.map((item) => item.label);
+      for (let i = sections.length - 1; i >= 0; i--) {
+        const el = document.getElementById(sections[i]);
+        if (el) {
+          const rect = el.getBoundingClientRect();
+          if (rect.top <= 100) {
+            setActiveSection(sections[i]);
+            break;
+          }
+        }
+      }
     };
-    window.addEventListener("scroll", handleScroll);
+    window.addEventListener("scroll", handleScroll, { passive: true });
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
   return (
-    <motion.header
-      initial={shouldReduceMotion ? false : { y: -100, opacity: 0 }}
-      animate={{ y: 0, opacity: 1 }}
-      transition={{ duration: shouldReduceMotion ? 0 : 0.8, ease: [0.16, 1, 0.3, 1] }}
-      className={cn(
-        "fixed top-0 left-0 right-0 z-40 transition-all duration-300 border-b border-transparent",
-        scrolled 
-          ? "bg-[#05070b]/70 backdrop-blur-md border-[rgba(255,255,255,0.05)] py-4" 
-          : "bg-transparent py-6"
-      )}
+    <nav
+      className="fixed top-0 left-0 right-0 z-50 bg-[#282C33] h-16"
+      aria-label="Main navigation"
     >
-      <div className="container mx-auto px-6 md:px-12 flex items-center justify-between">
-        <a href="#" className="text-xl font-bold tracking-widest uppercase focus:outline-none focus:ring-2 focus:ring-blue-500 rounded">
-          {portfolio.name.split(" ")[0]}
-        </a>
+      <div className="max-w-[1024px] mx-auto h-full flex items-center justify-between px-4">
+        <Logo />
 
-        {/* Desktop Nav */}
-        <nav className="hidden md:flex items-center gap-8" aria-label="Main Navigation">
-          <ul className="flex items-center gap-8 text-sm font-medium text-[--color-foreground-muted]">
-            {navLinks.map((link) => (
-              <li key={link.name}>
-                <a href={link.href} className="hover:text-white transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-blue-500 rounded px-1">
-                  {link.name}
-                </a>
-              </li>
-            ))}
-          </ul>
-          <div className="w-px h-4 bg-[rgba(255,255,255,0.1)]" aria-hidden="true" />
-          <div className="flex items-center gap-4 text-sm font-medium">
-            <a href={portfolio.social.github} target="_blank" rel="noopener noreferrer" className="hover:text-white transition-colors">
-              GitHub
+        {/* Desktop nav */}
+        <div className="hidden md:flex items-center gap-6">
+          {navItems.map((item) => (
+            <a
+              key={item.label}
+              href={item.href}
+              className={`text-sm transition-colors hover:text-white focus:outline-none focus:ring-2 focus:ring-[#C778DD] rounded px-1 ${
+                activeSection === item.label
+                  ? "text-white"
+                  : "text-[#ABB2BF]"
+              }`}
+            >
+              <span className="text-[#C778DD]">#</span>
+              {item.label}
             </a>
-            <a href={portfolio.social.resume} className="px-4 py-2 bg-white/5 hover:bg-white/10 border border-white/10 rounded-lg transition-colors">
-              Resume
-            </a>
-          </div>
-        </nav>
+          ))}
+          <span className="text-[#ABB2BF] text-sm ml-2">EN</span>
+        </div>
 
-        {/* Mobile Toggle */}
-        <button 
-          className="md:hidden p-2 text-white/70 hover:text-white focus:outline-none focus:ring-2 focus:ring-blue-500 rounded"
-          onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-          aria-label="Toggle navigation menu"
-          aria-expanded={mobileMenuOpen}
+        {/* Mobile hamburger */}
+        <button
+          className="md:hidden flex flex-col gap-1.5 p-2 focus:outline-none focus:ring-2 focus:ring-[#C778DD] rounded"
+          onClick={() => setMobileOpen(!mobileOpen)}
+          aria-label={mobileOpen ? "Close menu" : "Open menu"}
+          aria-expanded={mobileOpen}
         >
-          {mobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
+          <span
+            className={`block w-5 h-0.5 bg-[#D9D9D9] transition-transform ${
+              mobileOpen ? "rotate-45 translate-y-2" : ""
+            }`}
+          />
+          <span
+            className={`block w-5 h-0.5 bg-[#D9D9D9] transition-opacity ${
+              mobileOpen ? "opacity-0" : ""
+            }`}
+          />
+          <span
+            className={`block w-5 h-0.5 bg-[#D9D9D9] transition-transform ${
+              mobileOpen ? "-rotate-45 -translate-y-2" : ""
+            }`}
+          />
         </button>
       </div>
 
-      {/* Mobile Nav */}
+      {/* Mobile overlay with AnimatePresence */}
       <AnimatePresence>
-        {mobileMenuOpen && (
+        {mobileOpen && (
           <motion.div
-            initial={shouldReduceMotion ? false : { opacity: 0, height: 0 }}
+            className="md:hidden bg-[#282C33] border-t border-[#ABB2BF]/20 px-4 py-6 flex flex-col gap-4 overflow-hidden"
+            initial={prefersReducedMotion ? false : { opacity: 0, height: 0 }}
             animate={{ opacity: 1, height: "auto" }}
-            exit={shouldReduceMotion ? { opacity: 0 } : { opacity: 0, height: 0 }}
-            transition={{ duration: shouldReduceMotion ? 0 : 0.3 }}
-            className="md:hidden bg-[#070b12] border-b border-white/5 overflow-hidden"
+            exit={prefersReducedMotion ? undefined : { opacity: 0, height: 0 }}
+            transition={{ duration: 0.25, ease: "easeInOut" }}
           >
-            <nav className="flex flex-col px-6 py-4 gap-4" aria-label="Mobile Navigation">
-              {navLinks.map((link) => (
-                <a 
-                  key={link.name} 
-                  href={link.href} 
-                  onClick={() => setMobileMenuOpen(false)}
-                  className="text-lg py-2 text-white/70 hover:text-white border-b border-white/5"
-                >
-                  {link.name}
-                </a>
-              ))}
-              <div className="flex items-center gap-4 pt-2">
-                <a href={portfolio.social.github} target="_blank" rel="noopener noreferrer" className="text-white/70 hover:text-white">
-                  GitHub
-                </a>
-                <a href={portfolio.social.resume} className="text-white/70 hover:text-white">
-                  Resume
-                </a>
-              </div>
-            </nav>
+            {navItems.map((item, i) => (
+              <motion.a
+                key={item.label}
+                href={item.href}
+                onClick={() => setMobileOpen(false)}
+                className={`text-lg transition-colors focus:outline-none focus:ring-2 focus:ring-[#C778DD] rounded ${
+                  activeSection === item.label
+                    ? "text-white"
+                    : "text-[#ABB2BF]"
+                }`}
+                initial={prefersReducedMotion ? false : { opacity: 0, x: -12 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ duration: 0.2, delay: i * 0.05 }}
+              >
+                <span className="text-[#C778DD]">#</span>
+                {item.label}
+              </motion.a>
+            ))}
           </motion.div>
         )}
       </AnimatePresence>
-    </motion.header>
+    </nav>
   );
 }
