@@ -3,6 +3,7 @@
 import { motion, useReducedMotion } from "framer-motion";
 import Image from "next/image";
 import { portfolio } from "@/data/portfolio";
+import { assetPath } from "@/lib/utils";
 
 const headerFromLeft = {
   hidden: { opacity: 0, x: -30 },
@@ -109,7 +110,7 @@ export function About() {
               {/* Main image */}
               <div className="w-full h-full bg-[#282C33] border border-[#ABB2BF] overflow-hidden relative">
                 <Image
-                  src="/images/photo.jpg"
+                  src={assetPath("/images/photo.jpg")}
                   alt={portfolio.name}
                   fill
                   className="object-cover object-center"

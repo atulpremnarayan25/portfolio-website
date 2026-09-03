@@ -3,6 +3,7 @@
 import Image from "next/image";
 import { motion, useReducedMotion } from "framer-motion";
 import { portfolio } from "@/data/portfolio";
+import { assetPath } from "@/lib/utils";
 
 const headerFromLeft = {
   hidden: { opacity: 0, x: -30 },
@@ -77,7 +78,7 @@ function MedicalErpPreview() {
   return (
     <div className="w-full h-full bg-[#1E1E1E] relative overflow-hidden select-none">
       <Image
-        src="/images/medical-erp.png"
+        src={assetPath("/images/medical-erp.png")}
         alt="Medical ERP System Preview"
         fill
         className="object-cover object-center"
@@ -90,7 +91,7 @@ function CryptoTrackerPreview() {
   return (
     <div className="w-full h-full bg-[#1E1E1E] relative overflow-hidden select-none">
       <Image
-        src="/images/crypto-price-tracker.png"
+        src={assetPath("/images/crypto-price-tracker.png")}
         alt="Crypto Price Tracker Preview"
         fill
         className="object-cover object-center"
@@ -103,7 +104,7 @@ function ProofOfLearningPreview() {
   return (
     <div className="w-full h-full bg-[#1E1E1E] relative overflow-hidden select-none">
       <Image
-        src="/images/proof-of-learning.png"
+        src={assetPath("/images/proof-of-learning.png")}
         alt="ProofOfLearning Preview"
         fill
         className="object-cover object-center"
@@ -116,7 +117,7 @@ function PokepediaPreview() {
   return (
     <div className="w-full h-full bg-[#1E1E1E] relative overflow-hidden select-none">
       <Image
-        src="/images/pokepedia.png"
+        src={assetPath("/images/pokepedia.png")}
         alt="Poképedia Preview"
         fill
         className="object-cover object-center"
@@ -129,7 +130,7 @@ function EyeBlinkPreview() {
   return (
     <div className="w-full h-full bg-[#1E1E1E] relative overflow-hidden select-none">
       <Image
-        src="/images/eye-blink-hci.png"
+        src={assetPath("/images/eye-blink-hci.png")}
         alt="Eye-Blink HCI Preview"
         fill
         className="object-cover object-center"

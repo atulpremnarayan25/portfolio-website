@@ -3,6 +3,7 @@
 import { motion, useReducedMotion } from "framer-motion";
 import Image from "next/image";
 import { portfolio } from "@/data/portfolio";
+import { assetPath } from "@/lib/utils";
 
 function DotGrid({
   rows = 5,
@@ -117,7 +118,7 @@ export function Hero() {
               {/* Profile image */}
               <div className="w-full h-full bg-[#282C33] border border-[#ABB2BF] overflow-hidden relative">
                 <Image
-                  src="/images/profile.png"
+                  src={assetPath("/images/profile.png")}
                   alt={portfolio.name}
                   fill
                   className="object-cover object-center"
