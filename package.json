@@ -7,8 +7,8 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
-    "predeploy": "next build && touch out/.nojekyll",
-    "deploy": "gh-pages -d out --dotfiles"
+    "predeploy": "next build && touch out/.nojekyll && echo '' > out/.gitignore",
+    "deploy": "gh-pages -d out --dotfiles --nojekyll"
   },
   "dependencies": {
     "clsx": "^2.1.1",
