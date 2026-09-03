@@ -79,11 +79,11 @@ export function Hero() {
                   {word}
                 </motion.span>
               ))}
-              <motion.span variants={wordVariant} className="inline-block text-[#C778DD]">
+              <motion.span variants={wordVariant} className="inline-block text-[#C778DD] mr-[0.3em]">
                 {hero.highlights[0]}
               </motion.span>
-              <motion.span variants={wordVariant} className="inline-block mr-[0.3em]">
-                {"  and  "}
+              <motion.span variants={wordVariant} className="inline-block text-white mr-[0.3em]">
+                and
               </motion.span>
               <motion.span variants={wordVariant} className="inline-block text-[#C778DD]">
                 {hero.highlights[1]}
