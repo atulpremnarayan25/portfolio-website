@@ -3,12 +3,14 @@
 
 # Portfolio website files and directories
 !.gitignore
+!.github/
 !package.json
 !package-lock.json
 !tsconfig.json
 !next.config.ts
 !postcss.config.mjs
-!eslint.config.mj
+!eslint.config.mjs
+!PRD.md
 !README.md
 !public/
 !src/
